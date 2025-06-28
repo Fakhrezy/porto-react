@@ -7,12 +7,11 @@ function App() {
 	const [roleText, setRoleText] = useState("designer");
 	const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
 	const [showAllCertificates, setShowAllCertificates] = useState(false);
-	const [showToolsOverlay, setShowToolsOverlay] = useState(true);
-	const [isDarkMode, setIsDarkMode] = useState(false);
+	const [visibleSections, setVisibleSections] = useState(new Set());
 
 	const textArray = useMemo(() => ["Hello World...", "I'm Deden Fahrul"], []);
 	const roleArray = useMemo(
-		() => ["designer", "developer", "data scientist", "learner", "network engineer"],
+		() => ["designer", "developer", "data scientist", "learner"],
 		[]
 	);
 
@@ -21,44 +20,38 @@ function App() {
 			{
 				id: 1,
 				image: "/images/js.jpg",
-				title: "Programming",
-				description: "basic javascript programming in Dicoding Academy",
-				url: "https://www.dicoding.com/certificates/EYX4GW1D6ZDL"
+				title: "Dicoding",
+				description: "basic javascript programming"
 			},
 			{
 				id: 2,
 				image: "/images/js.jpg",
-				title: "Programming",
-				description: "basic python programming in Dicoding Academy",
-				url: "https://www.dicoding.com/certificates/98XWEMJ5LXM3"
+				title: "Dicoding",
+				description: "basic python programming"
 			},
 			{
 				id: 3,
 				image: "/images/js.jpg",
-				title: "Data Engineering",
-				description: "data visualization in Dicoding Academy",
-				url: "https://www.dicoding.com/certificates/53XED6GDVPRN"
+				title: "Dicoding",
+				description: "data visualization"
 			},
 			{
 				id: 4,
 				image: "/images/js.jpg",
-				title: "AI and Machine Learning",
-				description: "basic machine learning in Dicoding Academy",
-				url: "https://www.dicoding.com/certificates/1RXYE598KZVM"
+				title: "Dicoding",
+				description: "basic machine learning"
 			},
 			{
 				id: 5,
 				image: "/images/js.jpg",
-				title: "Management",
-				description: "financial literacy in Dicoding Academy",
-				url: "https://www.dicoding.com/certificates/NVP75RE7OXR0"
+				title: "Dicoding",
+				description: "financial literacy"
 			},
 			{
 				id: 6,
 				image: "/images/p3ri.jpg",
-				title: "Organizing",
-				description: "Organizing Committee of Ramadan and Eid al-Adha Program at Salman ITB",
-				url: "https://drive.google.com/file/d/1uZ79BPqCgjfpiKVIaRXmYxpPYjPueYjd/view?usp=sharing"
+				title: "Salman ITB",
+				description: "Organizing Committee of Ramadan and Eid al-Adha Program"
 			}
 		],
 		[]
@@ -124,87 +117,9 @@ function App() {
 		[currentRoleIndex, roleArray]
 	);
 
-	// Apply theme changes to document
-	useEffect(
-		() => {
-			if (isDarkMode) {
-				document.body.classList.add("dark-theme");
-			} else {
-				document.body.classList.remove("dark-theme");
-			}
-		},
-		[isDarkMode]
-	);
-
 	// Toggle function for showing more certificates
 	const toggleCertificates = () => {
 		setShowAllCertificates(!showAllCertificates);
-	};
-
-	// Tools overlay functions
-	const toggleToolsOverlay = () => {
-		setShowToolsOverlay(!showToolsOverlay);
-	};
-
-	const toggleTheme = () => {
-		setIsDarkMode(!isDarkMode);
-	};
-
-	const scrollToTop = () => {
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	};
-
-	const downloadCV = () => {
-		// Open Google Drive CV link in new tab
-		window.open(
-			"https://drive.google.com/file/d/1bBhbM3p2wa5Joec9Ixp-FtRl91xlNtNq/view",
-			"_blank"
-		);
-	};
-
-	const viewCertificate = url => {
-		// Open certificate link in new tab
-		window.open(url, "_blank");
-	};
-
-	// Function to handle navigation click and reset animations
-	const handleNavClick = targetId => {
-		// Remove animate-in class from all elements to reset animations
-		const animatedElements = document.querySelectorAll(".animate-in");
-		animatedElements.forEach(el => {
-			el.classList.remove("animate-in");
-		});
-
-		// Reset mask reveal animations specifically
-		const maskRevealElements = document.querySelectorAll(".mask-reveal-title");
-		maskRevealElements.forEach(el => {
-			el.style.animation = "none";
-		});
-
-		// Smooth scroll to target section
-		const targetElement = document.getElementById(targetId);
-		if (targetElement) {
-			targetElement.scrollIntoView({
-				behavior: "smooth",
-				block: "start"
-			});
-		}
-
-		// Re-trigger animations after a small delay
-		setTimeout(() => {
-			const elementsToAnimate = document.querySelectorAll(
-				`#${targetId} .scroll-animate, #${targetId} .scale-in, #${targetId} .certificate-card, #${targetId} .skill-logo, #${targetId} .mask-reveal-title`
-			);
-			elementsToAnimate.forEach(el => {
-				if (el.getBoundingClientRect().top < window.innerHeight) {
-					el.classList.add("animate-in");
-					// Re-trigger mask reveal animation
-					if (el.classList.contains("mask-reveal-title")) {
-						el.style.animation = "";
-					}
-				}
-			});
-		}, 300);
 	};
 
 	// Get certificates to display
@@ -255,13 +170,16 @@ function App() {
 				entries.forEach(entry => {
 					if (entry.isIntersecting) {
 						entry.target.classList.add("animate-in");
+						setVisibleSections(prev =>
+							new Set(prev).add(entry.target.id || entry.target.className)
+						);
 					}
 				});
 			}, observerOptions);
 
 			// Observe all sections and animatable elements
 			const elementsToObserve = document.querySelectorAll(
-				".section, .certificate-card, .skill-logo, .about-image, .certificate-image, .home-image, .scroll-animate, .scale-in, .mask-reveal-title"
+				".section, .certificate-card, .skill-logo, .about-image, .certificate-image, .home-image, .scroll-animate, .scale-in"
 			);
 
 			elementsToObserve.forEach(el => observer.observe(el));
@@ -280,46 +198,22 @@ function App() {
 					</div>
 					<ul className="nav-menu">
 						<li className="nav-item">
-							<a
-								href="#home"
-								className="nav-link"
-								onClick={e => {
-									e.preventDefault();
-									handleNavClick("home");
-								}}>
+							<a href="#home" className="nav-link">
 								Home
 							</a>
 						</li>
 						<li className="nav-item">
-							<a
-								href="#about"
-								className="nav-link"
-								onClick={e => {
-									e.preventDefault();
-									handleNavClick("about");
-								}}>
+							<a href="#about" className="nav-link">
 								About
 							</a>
 						</li>
 						<li className="nav-item">
-							<a
-								href="#certificate"
-								className="nav-link"
-								onClick={e => {
-									e.preventDefault();
-									handleNavClick("certificate");
-								}}>
+							<a href="#certificate" className="nav-link">
 								Certificate
 							</a>
 						</li>
 						<li className="nav-item">
-							<a
-								href="#contact"
-								className="nav-link"
-								onClick={e => {
-									e.preventDefault();
-									handleNavClick("contact");
-								}}>
+							<a href="#contact" className="nav-link">
 								Contact
 							</a>
 						</li>
@@ -356,15 +250,13 @@ function App() {
 											{roleText}
 										</span>
 									</p>
-									<button className="cta-button" onClick={downloadCV}>
-										Download CV
-									</button>
+									<button className="cta-button">Get Started</button>
 								</div>
 							</div>
 							<div className="home-image scale-in">
 								<img
-									src={isDarkMode ? "/images/me-dark.png" : "/images/me.png"}
-									alt="profile"
+									src="/images/me.png"
+									alt="Computer"
 									onError={e => {
 										e.target.style.display = "none";
 										e.target.nextSibling.style.display = "block";
@@ -421,7 +313,7 @@ function App() {
 										textAnchor="middle"
 										fill="rgba(255,255,255,0.6)"
 										fontSize="12">
-										Profile
+										Computer Illustration
 									</text>
 								</svg>
 							</div>
@@ -444,18 +336,14 @@ function App() {
 					<div className="container">
 						<div className="about-image scroll-animate">
 							<img
-								src={
-									isDarkMode ? "/images/about-dark.png" : "/images/about.png"
-								}
+								src="/images/about.png"
 								alt="About Me"
 								onError={e => {
 									e.target.style.display = "none";
 								}}
 							/>
 						</div>
-						<h2 className="about-title scroll-animate mask-reveal-title">
-							About Me
-						</h2>
+						<h2 className="about-title scroll-animate">About Me</h2>
 						<p className="scroll-animate">
 							Hey there! I'm passionate about all things tech—whether it's
 							diving into data science and machine learning, tinkering with
@@ -482,7 +370,7 @@ function App() {
 								</div>
 							</a>
 							<a
-								href="https://github.com/Fakhrezy"
+								href="https://www.instagram.com/dn.fahrul/"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="skill-link">
@@ -497,7 +385,7 @@ function App() {
 								</div>
 							</a>
 							<a
-								href="https://www.linkedin.com/in/dedenfahrul/"
+								href="https://www.instagram.com/dn.fahrul/"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="skill-link">
@@ -512,7 +400,7 @@ function App() {
 								</div>
 							</a>
 							<a
-								href="https://www.facebook.com/uapap.fhrl/"
+								href="https://www.instagram.com/dn.fahrul/"
 								target="_blank"
 								rel="noopener noreferrer"
 								className="skill-link">
@@ -535,18 +423,14 @@ function App() {
 					<div className="container">
 						<div className="certificate-image scroll-animate">
 							<img
-								src={
-									isDarkMode
-										? "/images/certificate-dark.png"
-										: "/images/certificate.png"
-								}
+								src="/images/certificate.png"
 								alt="My Certificates"
 								onError={e => {
 									e.target.style.display = "none";
 								}}
 							/>
 						</div>
-						<h2 className="certificate-title scroll-animate mask-reveal-title">
+						<h2 className="certificate-title scroll-animate">
 							My Certificates
 						</h2>
 						<div className="certificates-grid">
@@ -567,16 +451,12 @@ function App() {
 									<p>
 										{cert.description}
 									</p>
-									<button
-										className="certificate-btn"
-										onClick={() => viewCertificate(cert.url)}>
-										View Certificate
-									</button>
+									<button className="certificate-btn">View Certificate</button>
 								</div>
 							)}
 						</div>
 						{certificatesData.length > 3 &&
-							<div className="certificate-section-footer scroll-animate">
+							<div className="certificate-section-footer">
 								<button className="view-more-btn" onClick={toggleCertificates}>
 									{showAllCertificates ? "Show Less" : "View More..."}
 								</button>
@@ -607,80 +487,25 @@ function App() {
 						/>
 					</div>
 					<div className="container">
-						<div className="contact-image scroll-animate">
-							<img
-								src={
-									isDarkMode
-										? "/images/contact-dark.png"
-										: "/images/contact.png"
-								}
-								alt="Contact Me"
-								onError={e => {
-									e.target.style.display = "none";
-								}}
-							/>
-						</div>
-						<h2 className="scroll-animate mask-reveal-title">Contact Me</h2>
-						<div className="contact-layout">
-							<div className="contact-content">
-								<p className="scroll-animate">
-									Let's get in touch and discuss your next project!
-								</p>
+						<h2 className="scroll-animate">Contact Me</h2>
+						<p className="scroll-animate">
+							Let's get in touch and discuss your next project!
+						</p>
+						<div className="contact-info scroll-animate">
+							<div className="contact-item">
+								<strong>Email:</strong> your.email@example.com
 							</div>
-							<div className="contact-info scroll-animate">
-								<div className="contact-item">
-									<strong>Email:</strong> dedenfahrulroziqin@gmail.com
-								</div>
-								<div className="contact-item">
-									<strong>Phone:</strong> +62 8129 2760 255
-								</div>
-								<div className="contact-item">
-									<strong>Location:</strong> Indonesia
-								</div>
+							<div className="contact-item">
+								<strong>Phone:</strong> +62 123 456 789
+							</div>
+							<div className="contact-item">
+								<strong>Location:</strong> Indonesia
 							</div>
 						</div>
+						<button className="contact-btn scroll-animate">Send Message</button>
 					</div>
 				</section>
 			</main>
-
-			{/* Tools Overlay */}
-			<div className={`tools-overlay ${!showToolsOverlay ? "hidden" : ""}`}>
-				<div
-					className="tool-item"
-					data-tooltip="Scroll to Top"
-					onClick={scrollToTop}>
-					<svg viewBox="0 0 24 24">
-						<path d="m18 15-6-6-6 6" />
-					</svg>
-				</div>
-				<div
-					className="tool-item"
-					data-tooltip={isDarkMode ? "Light Mode" : "Dark Mode"}
-					onClick={toggleTheme}>
-					{isDarkMode
-						? <img src="/images/sun.png" alt="Light Mode" />
-						: <svg viewBox="0 0 24 24">
-								<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-							</svg>}
-				</div>
-				<div
-					className="tool-item"
-					data-tooltip="Download CV"
-					onClick={downloadCV}>
-					<svg viewBox="0 0 24 24">
-						<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-						<polyline points="7,10 12,15 17,10" />
-						<line x1="12" y1="15" x2="12" y2="3" />
-					</svg>
-				</div>
-			</div>
-
-			{/* Tools Toggle Button */}
-			<div
-				className={`tools-toggle ${!showToolsOverlay ? "active" : ""}`}
-				onClick={toggleToolsOverlay}>
-				<img src="/images/gear.png" alt="Tools Menu" />
-			</div>
 		</div>
 	);
 }
