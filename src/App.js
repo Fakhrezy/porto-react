@@ -9,10 +9,17 @@ function App() {
 	const [showAllCertificates, setShowAllCertificates] = useState(false);
 	const [showToolsOverlay, setShowToolsOverlay] = useState(true);
 	const [isDarkMode, setIsDarkMode] = useState(false);
+	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	const textArray = useMemo(() => ["Hello World...", "I'm Deden Fahrul"], []);
 	const roleArray = useMemo(
-		() => ["designer", "developer", "data scientist", "learner", "network engineer"],
+		() => [
+			"designer",
+			"developer",
+			"data scientist",
+			"learner",
+			"network engineer"
+		],
 		[]
 	);
 
@@ -57,8 +64,10 @@ function App() {
 				id: 6,
 				image: "/images/p3ri.jpg",
 				title: "Organizing",
-				description: "Organizing Committee of Ramadan and Eid al-Adha Program at Salman ITB",
-				url: "https://drive.google.com/file/d/1uZ79BPqCgjfpiKVIaRXmYxpPYjPueYjd/view?usp=sharing"
+				description:
+					"Organizing Committee of Ramadan and Eid al-Adha Program at Salman ITB",
+				url:
+					"https://drive.google.com/file/d/1uZ79BPqCgjfpiKVIaRXmYxpPYjPueYjd/view?usp=sharing"
 			}
 		],
 		[]
@@ -162,6 +171,25 @@ function App() {
 		);
 	};
 
+	const toggleMobileMenu = () => {
+		setIsMobileMenuOpen(!isMobileMenuOpen);
+	};
+
+	// Close mobile menu when clicking outside
+	useEffect(
+		() => {
+			const handleClickOutside = event => {
+				if (isMobileMenuOpen && !event.target.closest(".navbar")) {
+					setIsMobileMenuOpen(false);
+				}
+			};
+
+			document.addEventListener("click", handleClickOutside);
+			return () => document.removeEventListener("click", handleClickOutside);
+		},
+		[isMobileMenuOpen]
+	);
+
 	const viewCertificate = url => {
 		// Open certificate link in new tab
 		window.open(url, "_blank");
@@ -169,6 +197,9 @@ function App() {
 
 	// Function to handle navigation click and reset animations
 	const handleNavClick = targetId => {
+		// Close mobile menu if open
+		setIsMobileMenuOpen(false);
+
 		// Remove animate-in class from all elements to reset animations
 		const animatedElements = document.querySelectorAll(".animate-in");
 		animatedElements.forEach(el => {
@@ -278,7 +309,18 @@ function App() {
 					<div className="nav-logo">
 						<a href="#home">Portfolio</a>
 					</div>
-					<ul className="nav-menu">
+
+					{/* Hamburger Menu Button */}
+					<div
+						className={`hamburger ${isMobileMenuOpen ? "active" : ""}`}
+						onClick={toggleMobileMenu}>
+						<span />
+						<span />
+						<span />
+					</div>
+
+					{/* Desktop Menu */}
+					<ul className={`nav-menu ${isMobileMenuOpen ? "active" : ""}`}>
 						<li className="nav-item">
 							<a
 								href="#home"
