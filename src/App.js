@@ -166,7 +166,7 @@ function App() {
 	const downloadCV = () => {
 		// Open Google Drive CV link in new tab
 		window.open(
-			"https://drive.google.com/file/d/1bBhbM3p2wa5Joec9Ixp-FtRl91xlNtNq/view",
+			"https://drive.google.com/file/d/1PwJg4NkBIs--n1YnqerncX5L8DpuG01G/view",
 			"_blank"
 		);
 	};
