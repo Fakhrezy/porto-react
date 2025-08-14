@@ -1360,11 +1360,11 @@ body.dark-theme #about {
 }
 
 body.dark-theme #certificate {
-	background: linear-gradient(135deg, #173a5e 0%, #1e4976 50%, #2a5a8c 100%);
+	background: linear-gradient(135deg, #173a5e 0%, #122d4a 50%, #193655 100%);
 }
 
 body.dark-theme #contact {
-	background: linear-gradient(135deg, #1e4976 0%, #2a5a8c 50%, #366ea3 100%);
+	background: linear-gradient(135deg, #163659 0%, #193655 50%, #1b3651 100%);
 }
 
 /* Dark theme for contact layout */
