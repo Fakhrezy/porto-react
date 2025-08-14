@@ -493,26 +493,50 @@ function App() {
 					</div>
 					<div className="container">
 						<div className="about-image scroll-animate">
-							<img
-								src={
-									isDarkMode ? "/images/about-dark.png" : "/images/about.png"
-								}
-								alt="About Me"
-								onError={e => {
-									e.target.style.display = "none";
-								}}
-							/>
+							<svg
+								width="80"
+								height="80"
+								viewBox="0 0 120 120"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<rect
+									width="120"
+									height="120"
+									rx="60"
+									fill="url(#about-gradient)"
+								/>
+								{/* Kepala - diposisikan di tengah dan ukuran seimbang */}
+								<circle cx="60" cy="45" r="20" stroke="white" strokeWidth="6" />
+								{/* Badan - dibuat lebih proporsional */}
+								<path
+									d="M95 90C95 92.5 92.5 95 90 95H30C27.5 95 25 92.5 25 90C25 77 40.5 65 60 65C79.5 65 95 77 95 90Z"
+									stroke="white"
+									strokeWidth="6"
+								/>
+								<defs>
+									<linearGradient
+										id="about-gradient"
+										x1="0"
+										y1="0"
+										x2="120"
+										y2="120"
+										gradientUnits="userSpaceOnUse">
+										<stop stopColor="#4285f4" />
+										<stop offset="1" stopColor="#a855f7" />
+									</linearGradient>
+								</defs>
+							</svg>
 						</div>
 						<h2 className="about-title scroll-animate mask-reveal-title">
 							About Me
 						</h2>
 						<p className="scroll-animate">
-							Hey there! I'm passionate about all things tech—whether it's
+							Hey there! I'm passionate about all things tech whether it's
 							diving into data science and machine learning, tinkering with
 							computer networks, or building clean, responsive web and mobile
-							apps. I also enjoy crafting eye-catching visuals through graphic
+							apps. I also enjoy crafting eye catching visuals through graphic
 							design. For me, combining logic and creativity is what makes tech
-							so exciting—there's always something new to explore, build, or
+							so exciting there's always something new to explore, build, or
 							improve.
 						</p>
 						<div className="skills">
@@ -584,20 +608,49 @@ function App() {
 				<section id="certificate" className="section">
 					<div className="container">
 						<div className="certificate-image scroll-animate">
-							<img
-								src={
-									isDarkMode
-										? "/images/certificate-dark.png"
-										: "/images/certificate.png"
-								}
-								alt="My Certificates"
-								onError={e => {
-									e.target.style.display = "none";
-								}}
-							/>
+							<svg
+								width="80"
+								height="80"
+								viewBox="0 0 120 120"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<rect
+									width="120"
+									height="120"
+									rx="60"
+									fill="url(#certificate-gradient)"
+								/>
+								{/* Document base */}
+								<path
+									d="M35 30C35 27.7909 36.7909 26 39 26H69L85 42V90C85 92.2091 83.2091 94 81 94H39C36.7909 94 35 92.2091 35 90V30Z"
+									stroke="white"
+									strokeWidth="6"
+								/>
+								{/* Document fold */}
+								<path d="M69 26L69 42H85" stroke="white" strokeWidth="6" />
+								{/* Document lines */}
+								<path
+									d="M45 60H75M45 72H75M45 84H65"
+									stroke="white"
+									strokeWidth="6"
+									strokeLinecap="round"
+								/>
+								<defs>
+									<linearGradient
+										id="certificate-gradient"
+										x1="0"
+										y1="0"
+										x2="120"
+										y2="120"
+										gradientUnits="userSpaceOnUse">
+										<stop stopColor="#4285f4" />
+										<stop offset="1" stopColor="#a855f7" />
+									</linearGradient>
+								</defs>
+							</svg>
 						</div>
 						<h2 className="certificate-title scroll-animate mask-reveal-title">
-							My Certificates
+							Certificates
 						</h2>
 						<div className="certificates-grid">
 							{certificatesToShow.map(cert =>
@@ -658,23 +711,47 @@ function App() {
 					</div>
 					<div className="container">
 						<div className="contact-image scroll-animate">
-							<img
-								src={
-									isDarkMode
-										? "/images/contact-dark.png"
-										: "/images/contact.png"
-								}
-								alt="Contact Me"
-								onError={e => {
-									e.target.style.display = "none";
-								}}
-							/>
+							<svg
+								width="80"
+								height="80"
+								viewBox="0 0 120 120"
+								fill="none"
+								xmlns="http://www.w3.org/2000/svg">
+								<rect
+									width="120"
+									height="120"
+									rx="60"
+									fill="url(#contact-gradient)"
+								/>
+								<path
+									d="M30 45C30 42.7909 31.7909 41 34 41H86C88.2091 41 90 42.7909 90 45V75C90 77.2091 88.2091 79 86 79H34C31.7909 79 30 77.2091 30 75V45Z"
+									stroke="white"
+									strokeWidth="6"
+								/>
+								<path
+									d="M30 45L57.4142 61.4142C58.9766 62.4066 61.0234 62.4066 62.5858 61.4142L90 45"
+									stroke="white"
+									strokeWidth="6"
+								/>
+								<defs>
+									<linearGradient
+										id="contact-gradient"
+										x1="0"
+										y1="0"
+										x2="120"
+										y2="120"
+										gradientUnits="userSpaceOnUse">
+										<stop stopColor="#4285f4" />
+										<stop offset="1" stopColor="#a855f7" />
+									</linearGradient>
+								</defs>
+							</svg>
 						</div>
 						<h2 className="scroll-animate mask-reveal-title">Contact Me</h2>
 						<div className="contact-layout">
 							<div className="contact-content">
 								<p className="scroll-animate">
-									Let's get in touch and discuss your next project!
+									Let's get in touch and discuss our next project!
 								</p>
 							</div>
 							<div className="contact-info scroll-animate">
