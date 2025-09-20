@@ -531,12 +531,12 @@ function App() {
 							About Me
 						</h2>
 						<p className="scroll-animate">
-							Hey there! I'm passionate about all things tech—whether it's
+							Hey there! I'm passionate about all things tech whether it's
 							diving into data science and machine learning, tinkering with
 							computer networks, or building clean, responsive web and mobile
 							apps. I also enjoy crafting eye catching visuals through graphic
 							design. For me, combining logic and creativity is what makes tech
-							so exciting—there's always something new to explore, build, or
+							so exciting there's always something new to explore, build, or
 							improve.
 						</p>
 						<div className="skills">
